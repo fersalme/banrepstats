@@ -73,6 +73,10 @@ print.banrep_data <- function(x, ...) {
     cat(sprintf("  Value range    : [%.4f, %.4f]\n",
                 min(x$data$value, na.rm = TRUE),
                 max(x$data$value, na.rm = TRUE)))
+    cat("Head\n")
+    print(head(x$data))
+    cat("\nTail\n")
+    print(tail(x$data))
   }
   cat("────────────────────────────────────────────────────────────\n")
   invisible(x)
@@ -108,9 +112,11 @@ fetch_banrep <- function(url) {
     rvest::html_text2(node)
   }
 
+  name_serie <- subset(banrep_flows(), flow_id == "DF_TRM_DAILY_HIST", select = "description") |> unname()
+
   header_meta <- list(
     id             = extract_text(doc, "message\\:id"),
-    name           = extract_text(doc, "common\\:name"),
+    name           = name_serie, #extract_text(doc, "common\\:name"),
     prepared       = extract_text(doc, "message\\:prepared"),
     extracted      = extract_text(doc, "message\\:extracted"),
     sender_id      = rvest::html_element(doc, "message\\:sender") |>
@@ -157,6 +163,7 @@ fetch_banrep <- function(url) {
     rvest::html_attr("value")
 
   df <- data.frame(
+    id = header_meta$id,
     date  = as.Date(periods, format = "%Y%m%d"),
     value = as.numeric(values),
     stringsAsFactors = FALSE
@@ -170,7 +177,3 @@ fetch_banrep <- function(url) {
     class = "banrep_data"
   )
 }
-
-
-# ── Null-coalescing operator (internal) ───────────────────────────────────────
-`%||%` <- function(x, y) if (is.null(x) || is.na(x)) y else x

@@ -36,13 +36,26 @@ series_plot.banrep_data <- function(x, ...) {
 
   suffix <- if (s$UNIT_MEASURE %in% c("ER", "PA")) "%" else ""
 
+  # Scale break density to the series' actual date span, so short series
+  # aren't sparse and long historical series aren't crowded with labels.
+  span_days <- as.numeric(diff(range(x$data$date)))
+  date_breaks <- if (span_days <= 365) {
+    "1 month"
+  } else if (span_days <= 365 * 3) {
+    "3 months"
+  } else if (span_days <= 365 * 10) {
+    "1 year"
+  } else {
+    "2 years"
+  }
+  date_labels <- if (date_breaks %in% c("1 year", "2 years")) "%Y" else "%b %Y"
+  
   ggplot2::ggplot(
     data    = x$data,
-    mapping = ggplot2::aes(x = date, y = value)
+    mapping = ggplot2::aes(x = date, y = value, color = id)
   ) +
-    ggplot2::geom_line(colour = "#005B96", linewidth = 0.6) +
-    ggplot2::geom_area(fill = "#005B96", alpha = 0.08) +
-    ggplot2::scale_x_date(date_breaks = "3 months", date_labels = "%b %Y") +
+    ggplot2::geom_line(linewidth = 0.6) + 
+    ggplot2::scale_x_date(date_breaks = date_breaks, date_labels = date_labels) +
     ggplot2::scale_y_continuous(
       labels = scales::label_number(suffix = suffix)
     ) +
@@ -51,14 +64,16 @@ series_plot.banrep_data <- function(x, ...) {
       subtitle = subtitle,
       caption  = caption,
       x        = NULL,
-      y        = unit_label
+      y        = unit_label,
+      color = "Serie"
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(
       plot.title       = ggplot2::element_text(face = "bold"),
       plot.subtitle    = ggplot2::element_text(colour = "grey40"),
-      plot.caption     = ggplot2::element_text(colour = "grey55", size = 8),
+      plot.caption     = ggplot2::element_text(colour = "grey55", size = 8, hjust = 0),
       axis.text.x      = ggplot2::element_text(angle = 45, hjust = 1),
-      panel.grid.minor = ggplot2::element_blank()
+      panel.grid.minor = ggplot2::element_blank(),
+      legend.position = "top"
     )
 }
