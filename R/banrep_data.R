@@ -2,34 +2,46 @@
 #'
 #' This function downloads the requested information using the Banrep API
 #'
-#' @param name description
+#' @param indicator Character vector of indicator codes. These codes correspond
+#' to the `idNombreSerie` column of `catalogo_banrep()` (or the bundled
+#' `banrep_cache` dataset).
+#' @param cache A data.table as returned by `catalogo_banrep()`, e.g. the
+#' bundled `banrep_cache` dataset. If omitted, `catalogo_banrep()` is called
+#' to fetch a live catalog.
+#'
+#' @return A data.table
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # One category, live catalog
+#' precios <- banrep_data(indicator = "PRECIOS_E_INFLACION")
+#' head(precios)
+#' # More than one category
+#' precios <- banrep_data(
+#'   indicator = c("PRECIOS_E_INFLACION", "TASAS_INTERES_Y_SECTOR_FINAN")
+#' )
+#' head(precios)
+#' # Using the bundled catalog instead of a live one
+#' precios <- banrep_data(indicator = "PRECIOS_E_INFLACION", cache = banrep_cache)
+#' head(precios)
+#' }
+#'
+banrep_data <- function(indicator, cache) {
+  catalogo <- if (missing(cache)) catalogo_banrep() else cache
 
+  if (!all(indicator %in% catalogo$idNombreSerie)) {
+    stop(sprintf(
+      "Indicadores permitidos : %s",
+      paste0(catalogo$idNombreSerie, collapse = ", ")
+    ))
+  }
 
-# # 1. Browse available flows
-# banrep_flows()
-# banrep_flows(topic = "IBR")
-# banrep_flows(category = "hist")
-#
-# # 2. IBR historical series
-# url_ibr <- build_url_banrep(
-#   flow         = "DF_IBR_DAILY_HIST",
-#   start_period = "2023",
-#   end_period   = "2025"       # strict less-than on year: includes up to 2024
-# )
-# ibr <- fetch_banrep(url_ibr)
-# ibr                            # triggers print.banrep_data
-# series_plot(ibr)
-#
-# # 3. TRM latest (no period filter needed for _LATEST flows)
-# url_trm <- build_url_banrep(flow = "DF_TRM_DAILY_LATEST")
-# trm <- fetch_banrep(url_trm)
-# trm
-#
-# # 4. Monetary aggregates historical
-# url_m <- build_url_banrep(
-#   flow         = "DF_MONAGG_MONTHLY_HIST",
-#   start_period = "2020",
-#   end_period   = "2025"
-# )
-# monagg <- fetch_banrep(url_m)
-# series_plot(monagg)
+  # build urls
+  ind_url <- lapply(indicator, build_url_banrep, catalogo = catalogo)
+
+  # descargar
+  data_list <- lapply(ind_url, fetch_banrep)
+
+  data.table::rbindlist(data_list)
+}

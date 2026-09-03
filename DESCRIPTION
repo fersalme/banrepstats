@@ -1,10 +1,32 @@
 Package: banrepstats
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: Download Economic Data from Banco de la República of Colombia
+Version: 0.1
+Authors@R:
+    person("Fernando", "Salcedo Mejía", , "fernandosalcedom@gmail.com", role = c("aut", "cre"))
+Description: Tools to browse the indicator catalog and download economic
+    time series published by Banco de la República (Colombia's central
+    bank) through its public statistics API. Provides functions to fetch
+    the indicator catalog, build request URLs, download series as tidy
+    data.table objects, and plot them with a consistent style.
 License: MIT + file LICENSE
+URL: https://github.com/fersalme/banrepstats
+BugReports: https://github.com/fersalme/banrepstats/issues
 Encoding: UTF-8
+Imports:
+    data.table,
+    ggplot2,
+    jsonlite,
+    httr2,
+    scales,
+    utils
+Suggests:
+    knitr,
+    quarto,
+    testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 8.1.0
+Depends:
+    R (>= 4.1.0)
+LazyData: true
+Config/roxygen2/version: 8.1.0
+Config/testthat/edition: 3
+VignetteBuilder: quarto

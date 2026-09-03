@@ -1,179 +1,146 @@
-# ── Build URL ─────────────────────────────────────────────────────────────────
-#' @export
-build_url_banrep <- function(
-    flow,
-    start_period     = NULL,
-    end_period       = NULL,
-    agency           = "ESTAT",
-    version          = "1.0",
-    key              = "all/ALL",
-    dimension_at_obs = "TIME_PERIOD",
-    detail           = "full",
-    endpoint         = "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data") {
+#' @import data.table
+#' @noRd
+.flatten_menu <- function(nodes) {
+  if (is.null(nodes) || !is.data.frame(nodes) || nrow(nodes) == 0) {
+    return(NULL)
+  }
+  cols <- c("id", "idPadre", "nombre", "idCarguePlan", "idMenuJson")
+  actual <- data.table::as.data.table(nodes[cols])
+  hijos <- lapply(nodes$menuHijos, .flatten_menu)
+  data.table::rbindlist(c(list(actual), hijos))
+}
 
-  # Validate flow against catalogue
-  valid_flows <- .banrep_flows$flow_id
-  if (missing(flow) || is.null(flow)) {
+#' Download the Banco de la República indicator catalog
+#'
+#' Fetches the live indicator menu tree from the Banco de la República
+#' statistics API and flattens it into a single table, one row per
+#' indicator.
+#'
+#' @param endpoint Catalog endpoint URL. Only change this for testing.
+#'
+#' @return A data.table with columns `idGrupo`, `NombreGrupo`, `idSerie`,
+#' `NombreSerie` and `idNombreSerie` (the code to pass as `indicator` to
+#' [banrep_data()]).
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' catalogo <- catalogo_banrep()
+#' head(catalogo)
+#' }
+catalogo_banrep <- function(
+  endpoint = "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXopcion"
+) {
+  catalogo_raw <- httr2::request(endpoint) |>
+    httr2::req_url_query(opcion = "CATALOGO_DATOS") |>
+    httr2::req_perform() |>
+    httr2::resp_body_string()
+
+  json_catalogo <- jsonlite::fromJSON(catalogo_raw, flatten = FALSE)
+
+  catalogo <- .flatten_menu(json_catalogo)
+  catalogo[, nombre_padre := nombre[match(idPadre, id)]]
+  catalogo <- catalogo[
+    idPadre > 0,
+    .(idPadre, nombre_padre, id, nombre, idMenuJson)
+  ]
+  catalogo[, `:=`(idPadre = as.integer(idPadre), id = as.integer(id))]
+  data.table::setorder(catalogo, idPadre)
+  colnames(catalogo) <- c(
+    "idGrupo",
+    "NombreGrupo",
+    "idSerie",
+    "NombreSerie",
+    "idNombreSerie"
+  )
+  catalogo[]
+}
+
+#' @noRd
+build_url_banrep <- function(
+  indicador,
+  catalogo = catalogo_banrep(),
+  endpoint = "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId"
+) {
+  if (missing(indicador) || is.null(indicador)) {
     stop(
-      "Argument 'flow' is required. Use banrep_flows() to see available options."
+      "Argument 'indicador' is required. Use catalogo_banrep() to see available options."
     )
   }
-  if (!flow %in% valid_flows) {
+  id_indicador <- catalogo[idNombreSerie == indicador, idSerie]
+  if (length(id_indicador) == 0L) {
     stop(
       sprintf(
-        "'%s' is not a valid flow_id. Use banrep_flows() to see available options.",
-        flow
+        "'%s' is not a valid indicador name. Use catalogo_banrep() to see available options.",
+        indicador
       )
     )
   }
 
-  # endPeriod works as a strict less-than operator on year:
-  # to include data up to year Y, set end_period = Y + 1
-  flow_ref <- paste(agency, flow, version, sep = ",")
-
   httr2::request(endpoint) |>
-    httr2::req_url_path_append(flow_ref, key, "") |>
-    httr2::req_url_query(
-      startPeriod            = start_period,
-      endPeriod              = end_period,
-      dimensionAtObservation = dimension_at_obs,
-      detail                 = detail
-    ) |>
+    httr2::req_url_query(idMenu = id_indicador[1]) |>
     (\(r) r$url)()
 }
 
-
-# ── Print method ──────────────────────────────────────────────────────────────
-#' @export
-print.banrep_data <- function(x, ...) {
-  h <- x$metadata$header
-  s <- x$metadata$series
-
-  cat("── Banrep SDMX Series ──────────────────────────────────────\n")
-  cat(sprintf("  ID             : %s\n", h$id))
-  cat(sprintf("  Name           : %s\n", h$name))
-  cat(sprintf("  Prepared       : %s\n", h$prepared))
-  cat(sprintf("  Extracted      : %s\n", h$extracted))
-  cat(sprintf("  Sender         : %s (%s)\n", h$sender_name, h$sender_id))
-  cat(sprintf("  Department     : %s\n", h$department))
-  cat(sprintf("  Email          : %s\n", h$email))
-  cat(sprintf("  Timezone       : %s\n", h$timezone))
-  cat(sprintf("  Dataset ID     : %s\n", h$dataset_id))
-  cat(sprintf("  Dataset action : %s\n", h$dataset_action))
-  cat("── Series Key ──────────────────────────────────────────────\n")
-  for (nm in names(s)) {
-    cat(sprintf("  %-20s : %s\n", nm, s[[nm]]))
-  }
-  cat("── Data ────────────────────────────────────────────────────\n")
-  cat(sprintf("  Observations   : %d rows\n", nrow(x$data)))
-  if (nrow(x$data) > 0L) {
-    cat(sprintf("  Date range     : %s to %s\n",
-                format(min(x$data$date)),
-                format(max(x$data$date))))
-    cat(sprintf("  Value range    : [%.4f, %.4f]\n",
-                min(x$data$value, na.rm = TRUE),
-                max(x$data$value, na.rm = TRUE)))
-    cat("Head\n")
-    print(head(x$data))
-    cat("\nTail\n")
-    print(tail(x$data))
-  }
-  cat("────────────────────────────────────────────────────────────\n")
-  invisible(x)
+#' @noRd
+.limpiar_serie <- function(id, unidad, descripcionPeriodicidad, data) {
+  d_datos <- data.table::as.data.table(data)
+  data.table::setnames(d_datos, c("date", "value"))
+  # Timestamps are midnight Bogotá time (UTC-5) as epoch ms, so the day
+  # count carries a fractional UTC offset; floor() recovers the intended
+  # calendar day instead of leaving it baked into the Date's numeric value.
+  d_datos[, date := as.Date(floor(date / 86400000), origin = "1970-01-01")]
+  cbind(
+    id = id,
+    unidad = unidad,
+    periodicidad = descripcionPeriodicidad,
+    d_datos
+  )
 }
 
-# ── Fetch and parse ───────────────────────────────────────────────────────────
-#' @export
+# Fetch and parse
+#' @noRd
 fetch_banrep <- function(url) {
-
   response <- httr2::request(url) |>
+    httr2::req_headers(
+      Referer = "https://suameca.banrep.gov.co/estadisticas-economicas/"
+    ) |>
     httr2::req_error(is_error = \(r) FALSE) |>
     httr2::req_perform()
 
   if (httr2::resp_status(response) != 200L) {
     status <- httr2::resp_status(response)
-    detail <- switch(as.character(status),
-                     "400" = "Syntax error: check query parameters.",
-                     "404" = "No results found for the query.",
-                     "500" = "Internal server error. Try again later.",
-                     "503" = "Service temporarily unavailable. Try again later.",
-                     "Unknown error."
+    detail <- switch(
+      as.character(status),
+      "400" = "Syntax error: check query parameters.",
+      "404" = "No results found for the query.",
+      "500" = "Internal server error. Try again later.",
+      "503" = "Service temporarily unavailable. Try again later.",
+      "Unknown error."
     )
-    stop(sprintf("HTTP %d - %s\n%s", status,
-                 detail, httr2::resp_body_string(response)))
-  }
-
-  doc <- httr2::resp_body_string(response) |>
-    rvest::read_html(encoding = "UTF-8")
-
-  extract_text <- function(doc, selector) {
-    node <- rvest::html_element(doc, selector)
-    if (is.na(node)) return(NA_character_)
-    rvest::html_text2(node)
-  }
-
-  name_serie <- subset(banrep_flows(), flow_id == "DF_TRM_DAILY_HIST", select = "description") |> unname()
-
-  header_meta <- list(
-    id             = extract_text(doc, "message\\:id"),
-    name           = name_serie, #extract_text(doc, "common\\:name"),
-    prepared       = extract_text(doc, "message\\:prepared"),
-    extracted      = extract_text(doc, "message\\:extracted"),
-    sender_id      = rvest::html_element(doc, "message\\:sender") |>
-      rvest::html_attr("id"),
-    sender_name    = rvest::html_element(doc, "message\\:sender") |>
-      rvest::html_element("common\\:name") |>
-      rvest::html_text2(),
-    department     = extract_text(doc, "message\\:department"),
-    email          = extract_text(doc, "message\\:email"),
-    timezone       = extract_text(doc, "message\\:timezone"),
-    dataset_id     = extract_text(doc, "message\\:datasetid"),
-    dataset_action = extract_text(doc, "message\\:datasetaction")
-  )
-
-  series_key_nodes <- rvest::html_elements(
-    doc, "generic\\:serieskey generic\\:value"
-  )
-
-  series_meta <- stats::setNames(
-    rvest::html_attr(series_key_nodes, "value"),
-    rvest::html_attr(series_key_nodes, "id")
-  ) |>
-    as.list()
-
-  obs_nodes <- rvest::html_elements(doc, "generic\\:obs")
-
-  if (length(obs_nodes) == 0L) {
-    message("The response contains no observations.")
-    return(structure(
-      list(
-        metadata = list(header = header_meta, series = series_meta),
-        data     = data.frame()
-      ),
-      class = "banrep_data"
+    stop(sprintf(
+      "HTTP %d - %s\n%s",
+      status,
+      detail,
+      httr2::resp_body_string(response)
     ))
   }
 
-  periods <- obs_nodes |>
-    rvest::html_elements("generic\\:obsdimension") |>
-    rvest::html_attr("value")
-
-  values <- obs_nodes |>
-    rvest::html_elements("generic\\:obsvalue") |>
-    rvest::html_attr("value")
-
-  df <- data.frame(
-    id = header_meta$id,
-    date  = as.Date(periods, format = "%Y%m%d"),
-    value = as.numeric(values),
-    stringsAsFactors = FALSE
+  datos <- jsonlite::fromJSON(
+    httr2::resp_body_string(response),
+    flatten = FALSE
   )
 
-  structure(
-    list(
-      metadata = list(header = header_meta, series = series_meta),
-      data     = df
-    ),
-    class = "banrep_data"
-  )
+  if (NROW(datos$SERIES) == 0L) {
+    message("The response contains no observations.")
+    return(data.table::data.table())
+  }
+
+  data.table::rbindlist(Map(
+    .limpiar_serie,
+    datos$SERIES$nombre,
+    datos$SERIES$unidad,
+    datos$SERIES$descripcionPeriodicidad,
+    datos$SERIES$data
+  ))
 }
