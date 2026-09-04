@@ -22,6 +22,20 @@ This vignette walks through the functions the package exports:
 - `banrep_data()`, to download one or more indicators, and
 - `series_plot()`, to plot the result.
 
+## Installation
+
+`banrepstats` is not on CRAN yet. Install it from GitHub with:
+
+```r
+# install.packages("remotes")
+remotes::install_github("fersalme/banrepstats")
+```
+
+```{r}
+#| label: setup
+library(banrepstats)
+```
+
 ## Browsing the indicator catalog
 
 Banco de la República organizes its indicators in a menu tree (topic ->
@@ -169,10 +183,11 @@ into the [tidyverts](https://tidyverts.org/) forecasting ecosystem
 
 These packages are not dependencies of `banrepstats`, so this example is
 not run when the vignette is built — install `tsibble`, `fable`,
-`fable.prophet` and `feasts` yourself to try it.
+`fable.prophet` and `feasts` yourself to try it. The plot below is a
+pre-rendered snapshot of the code's output.
 
 ```{r}
-#| eval: true
+#| eval: false
 library(dplyr)
 library(tsibble)
 library(fable)
@@ -207,3 +222,7 @@ fit
 fc <- fit |> forecast(h = "18 months")
 fc |> autoplot(desempleo)
 ```
+
+![18-month forecast of Colombia's national unemployment rate (ARIMA, ETS and prophet)][fig-forecast]
+
+[fig-forecast]: banrepstats-forecast.png
