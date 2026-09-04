@@ -3,6 +3,7 @@
 S3method(series_plot,data.table)
 export(banrep_data)
 export(catalogo_banrep)
+export(search_banrep)
 export(series_plot)
 import(data.table)
 importFrom(utils,globalVariables)

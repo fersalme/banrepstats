@@ -1,0 +1,137 @@
+---
+output: github_document
+---
+
+```{r}
+#| label: setup-chunk
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# banrepstats
+
+```{=html}
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN status](https://www.r-pkg.org/badges/version/banrepstats)](https://CRAN.R-project.org/package=banrepstats)
+<!-- badges: end -->
+```
+
+`banrepstats` downloads economic time series from Banco de la República's
+(Colombia's central bank) public statistics API — the same data behind its
+[SUAMECA](https://suameca.banrep.gov.co/estadisticas-economicas/#/) portal —
+and returns them as tidy `data.table` objects, ready to explore or plot.
+
+## Installation
+
+`banrepstats` is not on CRAN yet. Install it from GitHub with:
+
+```r
+# install.packages("remotes")
+remotes::install_github("fersalme/banrepstats")
+```
+
+```{r}
+#| label: setup
+library(banrepstats)
+```
+
+## Browsing the indicator catalog
+
+Banco de la República organizes its indicators in a menu tree (topic ->
+sub-topic -> indicator). `catalogo_banrep()` downloads that tree from the
+live API and flattens it into a single table, one row per indicator:
+
+```{r}
+#| label: catalogo
+catalogo <- catalogo_banrep()
+nrow(catalogo)
+head(catalogo)
+```
+
+Each row is one indicator:
+
+- `idGrupo` / `NombreGrupo`: the id and name of the parent topic (e.g.
+  "Precios e inflación").
+- `idSerie` / `NombreSerie`: the id and human-readable name of the
+  indicator itself (e.g. "Inflación y meta").
+- `idNombreSerie`: the indicator's unique code. This is the value you
+  pass to `banrep_data()`.
+
+Not sure which code you need? `search_banrep()` looks up a keyword
+(case-insensitive, partial match) against the topic and indicator names:
+
+```{r}
+#| label: search-banrep
+search_banrep("inflación")[, .(NombreGrupo, NombreSerie, idNombreSerie)]
+```
+
+## Downloading data
+
+Pass one of those codes to `banrep_data()` to download the underlying
+series as a single `data.table`:
+
+```{r}
+#| label: banrep-data-uno
+precios <- banrep_data(indicator = "inflacion_y_meta")
+head(precios)
+```
+
+A single indicator can still bundle more than one related series —
+notice how `"inflacion_y_meta"` alone already returns two:
+
+```{r}
+#| label: banrep-data-series
+unique(precios$id)
+```
+
+You can request several indicators at once — the results come back stacked
+in a single `data.table`:
+
+```{r}
+#| label: banrep-data-varios
+datos <- banrep_data(c("inflacion_y_meta", "tasas_interes_politica_monetaria"))
+unique(datos$id)
+```
+
+Fetching the catalog on every call has a network cost. If you don't need
+the live catalog, pass the bundled snapshot via `cache` to skip that
+request:
+
+```{r}
+#| label: banrep-data-cache
+precios_cache <- banrep_data("inflacion_y_meta", cache = banrep_cache)
+identical(precios$value, precios_cache$value)
+```
+
+## Plotting a series
+
+```{r}
+#| label: plot-precios
+#| fig-width: 7
+#| fig-height: 4
+series_plot(precios)
+```
+
+`series_plot()` draws one line per distinct series (the `id` column),
+colored with the package's Banco de la República-inspired palette.
+
+## What's included
+
+- `catalogo_banrep()` — download and flatten the live indicator catalog.
+- `search_banrep()` — search the catalog by keyword.
+- `banrep_data()` — download one or more indicators as a single `data.table`.
+- `series_plot()` — plot a `data.table` returned by `banrep_data()`.
+- `banrep_cache` — a bundled snapshot of the catalog, for offline lookups.
+
+See `vignette("banrepstats")` for a longer walkthrough, including an
+example of integrating with the `tsibble`/`fable` forecasting ecosystem.
+
+## License
+
+MIT

@@ -4,7 +4,15 @@
   if (is.null(nodes) || !is.data.frame(nodes) || nrow(nodes) == 0) {
     return(NULL)
   }
-  cols <- c("id", "idPadre", "nombre", "idCarguePlan", "idMenuJson")
+  cols <- c(
+    "id",
+    "idPadre",
+    "nombre",
+    "idCarguePlan",
+    "idMenuJson",
+    "idSubmenuJson",
+    "urlAcceso"
+  )
   actual <- data.table::as.data.table(nodes[cols])
   hijos <- lapply(nodes$menuHijos, .flatten_menu)
   data.table::rbindlist(c(list(actual), hijos))
@@ -41,10 +49,13 @@ catalogo_banrep <- function(
   catalogo <- .flatten_menu(json_catalogo)
   catalogo[, nombre_padre := nombre[match(idPadre, id)]]
   catalogo <- catalogo[
-    idPadre > 0,
-    .(idPadre, nombre_padre, id, nombre, idMenuJson)
+    idPadre > 0 & urlAcceso != "",
+    .(idPadre, nombre_padre, id, nombre, urlAcceso)
   ]
-  catalogo[, `:=`(idPadre = as.integer(idPadre), id = as.integer(id))]
+  catalogo[, `:=`(
+    idPadre = as.integer(idPadre),
+    id = as.integer(id)
+  )]
   data.table::setorder(catalogo, idPadre)
   colnames(catalogo) <- c(
     "idGrupo",

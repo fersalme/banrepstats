@@ -64,7 +64,7 @@ series_plot.data.table <- function(x, ...) {
       x = NULL,
       y = unidad_label,
       color = "Serie",
-      caption = "Fuente : Banco de la Rep\u00fablica - Portal de estad\u00edsticas econ\u00f3micas"
+      caption = "Source : Banco de la Rep\u00fablica - Portal de estad\u00edsticas econ\u00f3micas"
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(

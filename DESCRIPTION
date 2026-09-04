@@ -20,9 +20,15 @@ Imports:
     scales,
     utils
 Suggests:
+    dplyr,
+    fable,
+    fable.prophet,
+    feasts,
+    ggtime,
     knitr,
     quarto,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tsibble
 Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.1.0)

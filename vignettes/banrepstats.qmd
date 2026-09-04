@@ -15,9 +15,10 @@ knitr:
 [SUAMECA](https://suameca.banrep.gov.co/estadisticas-economicas/#/) portal —
 and returns them as tidy `data.table` objects, ready to explore or plot.
 
-This vignette walks through the three functions the package exports:
+This vignette walks through the functions the package exports:
 
 - `catalogo_banrep()`, to browse the indicator catalog,
+- `search_banrep()`, to search the catalog by keyword,
 - `banrep_data()`, to download one or more indicators, and
 - `series_plot()`, to plot the result.
 
@@ -54,24 +55,27 @@ Each row is one indicator:
   "Precios e inflación").
 - `idSerie` / `NombreSerie`: the id and human-readable name of the
   indicator itself (e.g. "Inflación y meta").
-- `idNombreSerie`: the indicator's category code. This is the value you
+- `idNombreSerie`: the indicator's unique code. This is the value you
   pass to `banrep_data()`.
 
-The catalog groups several related series under the same `idNombreSerie`
-code. For example, every price and inflation indicator shares the
-`"PRECIOS_E_INFLACION"` code:
+For example, "Inflación y meta" (under the "Precios e inflación" topic)
+has the code `"inflacion_y_meta"`:
 
 ```{r}
 #| label: catalogo-filtro
-subset(catalogo, idNombreSerie == "PRECIOS_E_INFLACION")
+subset(catalogo, idNombreSerie == "inflacion_y_meta")
 ```
 
-You can see the full list of available category codes with:
+Not sure which code you need? `search_banrep()` looks up a keyword
+(case-insensitive, partial match) against the topic and indicator names:
 
 ```{r}
-#| label: catalogo-codigos
-unique(catalogo$idNombreSerie)
+#| label: search-banrep
+search_banrep("inflación")[, .(NombreGrupo, NombreSerie, idNombreSerie)]
 ```
+
+`search_banrep()` also accepts a `cache` argument, with the same meaning
+as in `banrep_data()` (see below).
 
 ## Downloading data
 
@@ -80,7 +84,7 @@ series as a single `data.table`:
 
 ```{r}
 #| label: banrep-data-uno
-precios <- banrep_data(indicator = "PRECIOS_E_INFLACION")
+precios <- banrep_data(indicator = "inflacion_y_meta")
 head(precios)
 ```
 
@@ -91,8 +95,8 @@ Each row is one observation of one series:
 - `periodicidad`: the reporting frequency (e.g. "Anual", "Mensual").
 - `date` / `value`: the observation date and its value.
 
-A single category code can bundle more than one series — notice how
-`"PRECIOS_E_INFLACION"` alone already returns several:
+A single indicator can still bundle more than one related series —
+notice how `"inflacion_y_meta"` alone already returns two:
 
 ```{r}
 #| label: banrep-data-series
@@ -106,7 +110,7 @@ single `data.table`:
 
 ```{r}
 #| label: banrep-data-varios
-datos <- banrep_data(c("PRECIOS_E_INFLACION", "TASAS_INTERES_Y_SECTOR_FINAN"))
+datos <- banrep_data(c("inflacion_y_meta", "tasas_interes_politica_monetaria"))
 unique(datos$id)
 ```
 
@@ -118,6 +122,7 @@ valid options:
 ```{r}
 #| label: banrep-data-error
 #| error: true
+#| eval: false
 banrep_data("NO_EXISTE")
 ```
 
@@ -130,7 +135,7 @@ the live catalog, fetch it once and pass it in via `cache`:
 
 ```{r}
 #| label: banrep-data-cache
-precios_cache <- banrep_data("PRECIOS_E_INFLACION", cache = catalogo)
+precios_cache <- banrep_data("inflacion_y_meta", cache = catalogo)
 identical(precios$value, precios_cache$value)
 ```
 
@@ -158,12 +163,61 @@ series_plot(precios)
 
 Series with different units are still placed on the same panel, so
 `series_plot()` is best used with indicators that share a unit of
-measurement — as is typically the case for a single category code:
+measurement:
 
 ```{r}
 #| label: plot-tasas
 #| fig-width: 7
 #| fig-height: 4
-tasas <- banrep_data("TASAS_INTERES_Y_SECTOR_FINAN")
+tasas <- banrep_data("tasas_interes_politica_monetaria")
 series_plot(tasas)
+```
+
+## Integrate with time-series forecasting packages
+
+`banrep_data()` returns a plain `data.table`, not a `tsibble`, so it plugs
+into the [tidyverts](https://tidyverts.org/) forecasting ecosystem
+(`tsibble`, `fable`, `fable.prophet`) with one conversion step: turn the
+`date` column into an explicit time index and declare the series with
+`as_tsibble()`.
+
+These packages are not dependencies of `banrepstats`, so this example is
+not run when the vignette is built — install `tsibble`, `fable`,
+`fable.prophet` and `feasts` yourself to try it.
+
+```{r}
+#| eval: true
+library(dplyr)
+library(tsibble)
+library(fable)
+library(fable.prophet)
+library(ggtime)
+
+desempleo <- banrep_data(
+  "mercado_laboral_poblacion_tasa_ocupacion_desempleo"
+) |>
+  filter(id == "Tasa de desempleo - total nacional") |>
+  mutate(mes = yearmonth(date)) |>
+  as_tsibble(index = mes)
+
+# Hold out the last observations to check forecast accuracy later.
+train <- desempleo |>
+  filter(mes <= yearmonth("2024 Dec"))
+
+fit <- train |>
+  model(
+    arima = ARIMA(value),
+    ets = ETS(value),
+    prophet = prophet(
+      value ~ season(period = 12, order = 5, type = "multiplicative")
+    )
+  )
+fit
+#> # A mable: 1 x 3
+#>                       arima          ets   prophet
+#>                     <model>      <model>   <model>
+#> 1 <ARIMA(0,1,0)(2,0,0)[12]> <ETS(M,N,A)> <prophet>
+
+fc <- fit |> forecast(h = "18 months")
+fc |> autoplot(desempleo)
 ```
