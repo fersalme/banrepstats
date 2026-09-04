@@ -22,20 +22,6 @@ This vignette walks through the functions the package exports:
 - `banrep_data()`, to download one or more indicators, and
 - `series_plot()`, to plot the result.
 
-## Installation
-
-`banrepstats` is not on CRAN yet. Install it from GitHub with:
-
-```r
-# install.packages("remotes")
-remotes::install_github("fersalme/banrepstats")
-```
-
-```{r}
-#| label: setup
-library(banrepstats)
-```
-
 ## Browsing the indicator catalog
 
 Banco de la República organizes its indicators in a menu tree (topic ->

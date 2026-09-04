@@ -1,6 +1,11 @@
 
 # banrepstats
 
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN status](https://www.r-pkg.org/badges/version/banrepstats)](https://CRAN.R-project.org/package=banrepstats)
+<!-- badges: end -->
+
 `banrepstats` downloads economic time series from Banco de la
 República’s (Colombia’s central bank) public statistics API — the same
 data behind its
@@ -14,7 +19,7 @@ or plot.
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("fersalme/banrepstats")
+remotes::install_github("fersalme/banrepstats", build_vignettes = TRUE)
 ```
 
 ``` r

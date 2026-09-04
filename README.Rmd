@@ -33,7 +33,7 @@ and returns them as tidy `data.table` objects, ready to explore or plot.
 
 ```r
 # install.packages("remotes")
-remotes::install_github("fersalme/banrepstats")
+remotes::install_github("fersalme/banrepstats", build_vignettes = TRUE)
 ```
 
 ```{r}
