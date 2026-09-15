@@ -1,3 +1,28 @@
+#' @noRd
+.req_perform_banrep <- function(req) {
+  tryCatch(
+    httr2::req_perform(req),
+    httr2_failure = function(e) {
+      if (!grepl("SSL", conditionMessage(e), fixed = TRUE)) {
+        stop(e)
+      }
+      # Banrep's server omits the intermediate certificate that links its
+      # leaf certificate to a trusted root, so the chain can't be built
+      # from the system CA store alone. Retry supplying that intermediate
+      # ourselves: verification stays on, it just gets the missing link.
+      chain <- system.file(
+        "extdata",
+        "banrep-chain.pem",
+        package = "banrepstats"
+      )
+      if (!nzchar(chain)) {
+        stop(e)
+      }
+      httr2::req_perform(httr2::req_options(req, cainfo = chain))
+    }
+  )
+}
+
 #' @import data.table
 #' @noRd
 .flatten_menu <- function(nodes) {
@@ -18,13 +43,27 @@
   data.table::rbindlist(c(list(actual), hijos))
 }
 
+#' @noRd
+.endpoint_catalogo <- function() {
+  "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXopcion"
+}
+
+#' @noRd
+.endpoint_datos <- function() {
+  "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId"
+}
+
 #' Download the Banco de la República indicator catalog
 #'
 #' Fetches the live indicator menu tree from the Banco de la República
 #' statistics API and flattens it into a single table, one row per
 #' indicator.
 #'
-#' @param endpoint Catalog endpoint URL. Only change this for testing.
+#' Banrep's server does not send the intermediate certificate needed to
+#' build a complete TLS chain, which makes strict clients such as `curl`
+#' refuse the connection. This is handled automatically: on an SSL
+#' failure the request is retried with the missing intermediate supplied
+#' by the package, so certificate verification stays enabled throughout.
 #'
 #' @return A data.table with columns `idGrupo`, `NombreGrupo`, `idSerie`,
 #' `NombreSerie` and `idNombreSerie` (the code to pass as `indicator` to
@@ -36,12 +75,10 @@
 #' catalogo <- catalogo_banrep()
 #' head(catalogo)
 #' }
-catalogo_banrep <- function(
-  endpoint = "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXopcion"
-) {
-  catalogo_raw <- httr2::request(endpoint) |>
+catalogo_banrep <- function() {
+  catalogo_raw <- httr2::request(.endpoint_catalogo()) |>
     httr2::req_url_query(opcion = "CATALOGO_DATOS") |>
-    httr2::req_perform() |>
+    .req_perform_banrep() |>
     httr2::resp_body_string()
 
   json_catalogo <- jsonlite::fromJSON(catalogo_raw, flatten = FALSE)
@@ -71,7 +108,7 @@ catalogo_banrep <- function(
 build_url_banrep <- function(
   indicador,
   catalogo = catalogo_banrep(),
-  endpoint = "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId"
+  endpoint = .endpoint_datos()
 ) {
   if (missing(indicador) || is.null(indicador)) {
     stop(
@@ -117,7 +154,7 @@ fetch_banrep <- function(url) {
       Referer = "https://suameca.banrep.gov.co/estadisticas-economicas/"
     ) |>
     httr2::req_error(is_error = \(r) FALSE) |>
-    httr2::req_perform()
+    .req_perform_banrep()
 
   if (httr2::resp_status(response) != 200L) {
     status <- httr2::resp_status(response)

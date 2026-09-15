@@ -4,13 +4,7 @@
 \alias{catalogo_banrep}
 \title{Download the Banco de la República indicator catalog}
 \usage{
-catalogo_banrep(
-  endpoint =
-    "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXopcion"
-)
-}
-\arguments{
-\item{endpoint}{Catalog endpoint URL. Only change this for testing.}
+catalogo_banrep()
 }
 \value{
 A data.table with columns \code{idGrupo}, \code{NombreGrupo}, \code{idSerie},
@@ -21,6 +15,13 @@ A data.table with columns \code{idGrupo}, \code{NombreGrupo}, \code{idSerie},
 Fetches the live indicator menu tree from the Banco de la República
 statistics API and flattens it into a single table, one row per
 indicator.
+}
+\details{
+Banrep's server does not send the intermediate certificate needed to
+build a complete TLS chain, which makes strict clients such as \code{curl}
+refuse the connection. This is handled automatically: on an SSL
+failure the request is retried with the missing intermediate supplied
+by the package, so certificate verification stays enabled throughout.
 }
 \examples{
 \dontrun{
