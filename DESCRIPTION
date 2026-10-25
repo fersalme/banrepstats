@@ -1,6 +1,6 @@
 Package: banrepstats
 Title: Download Economic Data from Banco de la República of Colombia
-Version: 0.1.1
+Version: 1.1.0
 Authors@R:
     person("Fernando", "Salcedo Mejía", , "fernandosalcedom@gmail.com", role = c("aut", "cre"))
 Description: Tools to browse the indicator catalog and download economic
