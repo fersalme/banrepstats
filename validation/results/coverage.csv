@@ -1,0 +1,62 @@
+idNombreSerie,NombreGrupo,NombreSerie,ok,error,seconds,n_series,n_obs,n_missing,periodicidad,first_date,last_date,duplicated_obs,whole_day_dates
+inflacion_y_meta,Precios e inflación,Inflación y meta,TRUE,,0.364307403564453,2,1710,426,Anual/Mensual,1955-07-31,2026-09-30,0,TRUE
+indice_de_precios_al_consumidor_ipc,Precios e inflación,IPC_Índice de Precios al Consumidor,TRUE,,0.25525951385498,1,867,0,Mensual,1954-07-31,2026-09-30,0,TRUE
+indice_de_precios_al_productor_ipp,Precios e inflación,IPP_Índice de Precios del Productor,TRUE,,0.158844947814941,1,328,0,Mensual,1999-06-30,2026-09-30,0,TRUE
+indice_precios_vivienda_usada_ipvu,Precios e inflación,IPVU_Índice de precios de la vivienda usada,TRUE,,0.151371240615845,2,308,0,Trimestral,1988-03-31,2026-06-30,0,TRUE
+indice_precios_vivienda_nueva_ipvn,Precios e inflación,IPVNBR_Índice de precios de la vivienda nueva,TRUE,,0.322224140167236,10,2730,0,Mensual,2004-01-31,2026-09-30,0,TRUE
+unidad_valor_real_uvr,Precios e inflación,UVR_Unidad de valor real,TRUE,,0.426833629608154,1,9816,0,Diaria,2000-01-01,2026-11-15,0,TRUE
+inflacion_basica,Precios e inflación,Inflación básica,TRUE,,0.17340350151062,3,1569,0,Mensual,1983-03-31,2026-09-30,0,TRUE
+tasas_interes_politica_monetaria,Tasas de interés y sector financiero,Tasas de interés de política monetaria,TRUE,,0.397354125976563,1,10481,0,Diaria,1998-02-13,2026-10-25,0,TRUE
+encaje,Tasas de interés y sector financiero,Encaje,TRUE,,2.39665126800537,14,105527,0,Diaria,2000-12-13,2026-10-06,0,TRUE
+indice_mercado_accionario_colcap,Tasas de interés y sector financiero,Índice del mercado accionario COLCAP,TRUE,,0.426742315292358,1,4563,0,Diaria,2008-01-15,2026-10-23,0,TRUE
+tasas_interes_cdt_dtf,Tasas de interés,"CDT's a 90 (DTF), 180 y 360 días",TRUE,,0.36623740196228,3,5709,0,Semanal,1984-01-20,2026-10-30,0,TRUE
+tasas_interes_indicador_bancario_referencia_ibr,Tasas de interés,IBR_Indicador Bancario de Referencia,TRUE,,0.547518014907837,5,15127,0,Diaria,2008-01-02,2026-10-23,0,TRUE
+tasas_interes_tasa_interbancaria_tib,Tasas de interés,TIB_Tasa Interbancaria,TRUE,,0.281988143920898,1,4510,0,Diaria,2008-04-01,2026-10-22,0,TRUE
+tasas_interes_colocacion,Tasas de interés,Tasas de colocación,TRUE,,0.373019218444824,6,7656,0,Semanal,2002-05-03,2026-10-09,0,TRUE
+tasas_interes_cero_cupon_tes,Tasas de interés,Tasas Cero Cupón TES,TRUE,,1.00207829475403,6,33076,0,Diaria,2003-01-02,2026-10-16,0,TRUE
+tasas_interes_prime,Tasas de interés,Tasa de interés externa Prime,TRUE,,0.439682006835938,1,9777,0,Diaria,1987-11-05,2026-10-23,0,TRUE
+agregados_monetarios_crediticios_m1_m2_m3_base_monetaria_semanal,Agregados monetarios y crediticios,"M1, M2, M3 y base monetaria, semanal",TRUE,,0.389018774032593,4,9332,0,Semanal,1982-01-09,2026-10-09,0,TRUE
+agregados_monetarios_crediticios_m1_m2_m3_base_monetaria_mensual,Agregados monetarios y crediticios,"M1, M2, M3 y base monetaria, mensual",TRUE,,0.163815021514893,4,2052,0,Mensual,1984-01-31,2026-09-30,0,TRUE
+agregados_monetarios_crediticios_cartera,Agregados monetarios y crediticios,Cartera,TRUE,,0.173535585403442,4,1172,0,Mensual,2002-05-31,2026-09-30,0,TRUE
+sectorizacion_monetaria_credito_banrep,Sectorización monetaria y de crédito,Banco de la República,TRUE,,0.253090143203735,6,2262,0,Mensual,1993-01-31,2024-05-31,0,TRUE
+sectorizacion_monetaria_credito_sector_financiero,Sectorización monetaria y de crédito,Sector financiero,TRUE,,0.156974077224731,4,1516,0,Mensual,1993-01-31,2024-07-31,0,TRUE
+reservas_internacionales,Operaciones del Banco en los mercados y reservas internacionales,Reservas internacionales,TRUE,,0.16545033454895,1,801,0,Mensual,1960-01-31,2026-09-30,0,TRUE
+operaciones_mercado_monetario_oma_expancion_transitoria,Operaciones en el mercado monetario OMA,OMA de expansión transitoria,TRUE,,0.37236762046814,11,3300,0,Diaria,2024-12-26,2026-10-23,0,TRUE
+operaciones_mercado_monetario_oma_contraccion_transitoria,Operaciones en el mercado monetario OMA,OMA de contracción transitoria,TRUE,,0.464699268341065,6,12300,0,Diaria,2007-04-02,2026-10-23,0,TRUE
+operaciones_mercado_cambiario_resumen,Operaciones en el mercado cambiario,Resumen,TRUE,,0.288528203964233,8,1690,0,Diaria,1999-12-01,2026-10-15,0,TRUE
+operaciones_mercado_cambiario_operaciones_forward_ndf,Operaciones en el mercado cambiario,NDF_Operaciones Forward,TRUE,,0.197275161743164,4,384,0,Diaria,2020-03-13,2021-03-05,0,TRUE
+operaciones_mercado_cambiario_operaciones_fx_swaps,Operaciones en el mercado cambiario,Operaciones FX Swaps,TRUE,,0.139784574508667,4,248,0,Diaria,2020-03-19,2020-06-30,0,TRUE
+operaciones_mercado_cambiario_subasta_compra_directa_dolares,Operaciones en el mercado cambiario,Subasta de compra directa de dólares,TRUE,,0.39211630821228,4,4392,0,Diaria,2008-06-24,2014-12-10,0,TRUE
+tasas_cambio_monedas_reserva,"Sector externo, tasas de cambio y derivados",Tasas de cambio monedas de reserva,TRUE,,2.39764761924744,15,95845,0,Diaria,2008-11-20,2026-10-24,0,TRUE
+tasas_cambio_monedas_paises_vecinos,"Sector externo, tasas de cambio y derivados",Tasas de cambio monedas de países vecinos,TRUE,,1.36379766464233,10,17900,0,Diaria,2021-10-25,2026-10-24,0,TRUE
+balanza_cambiaria,"Sector externo, tasas de cambio y derivados",Balanza cambiaria,TRUE,,0.269880056381226,7,2107,0,Mensual,2001-09-30,2026-09-30,0,TRUE
+cuenta_corriente_como_porcentaje_pib,"Sector externo, tasas de cambio y derivados",Cuenta corriente como porcentaje del PIB,TRUE,,0.149236917495728,1,51,0,Anual,1975-12-31,2025-12-31,0,TRUE
+deuda_externa_publica_privada,"Sector externo, tasas de cambio y derivados",Deuda externa (pública y privada),TRUE,,0.238567352294922,4,1188,0,Mensual,2001-01-31,2025-09-30,0,TRUE
+indice_tasa_cambio_real_itcr,"Sector externo, tasas de cambio y derivados",ITCR_Índice de la tasa de cambio real,TRUE,,0.147071838378906,2,956,0,Mensual,1986-12-31,2026-09-30,0,TRUE
+indice_terminos_intercambio_bienes,"Sector externo, tasas de cambio y derivados",Índice de términos de intercambio de bienes,TRUE,,0.223145484924316,3,1137,0,Mensual,1995-01-31,2026-07-31,0,TRUE
+inversion_directa,"Sector externo, tasas de cambio y derivados",Inversión directa,TRUE,,0.142898082733154,3,274,0,Anual/Trimestral,1996-03-31,2026-06-30,0,TRUE
+posicion_inversion_internacional_pii,"Sector externo, tasas de cambio y derivados",Posición de inversión internacional,TRUE,,0.23395824432373,3,318,0,Trimestral,2000-03-31,2026-06-30,0,TRUE
+posicion_liquidez_internacional_pli,"Sector externo, tasas de cambio y derivados",PLI_Posición de liquidez internacional,TRUE,,0.134838819503784,1,318,0,Mensual,2000-04-30,2026-09-30,0,TRUE
+remesas_trabajadores,"Sector externo, tasas de cambio y derivados",Remesas de trabajadores,TRUE,,0.146253824234009,1,106,0,Trimestral,2000-03-31,2026-06-30,0,TRUE
+tasa_cambio_peso_colombiano_trm_dolar_usd,Tasa de cambio del peso colombiano por dólar - USD,Dólar hoy (Tasa representativa del mercado TRM),TRUE,,0.657752275466919,1,12753,0,Diaria,1991-11-27,2026-10-26,0,TRUE
+tasa_cambio_peso_colombiano_dolar_comportamiento_mercado_dolar_dia_tiempo_real,Tasa de cambio del peso colombiano por dólar - USD,Comportamiento del mercado del dólar durante el día (información en tiempo real),TRUE,,0.469229221343994,1,12753,0,Diaria,1991-11-27,2026-10-26,0,TRUE
+balanza_pagos_cuenta_corriente_cuenta_financiera,Balanza de pagos,Cuenta corriente y cuenta financiera,TRUE,,0.183693885803223,5,530,0,Trimestral,2000-03-31,2026-06-30,0,TRUE
+gobierno_nacional_central,Sector público y deuda pública,Gobierno Nacional Central,TRUE,,0.234435319900513,6,1620,0,Mensual,2004-01-31,2026-06-30,0,TRUE
+sector_publico_no_financiero,Sector público y deuda pública,Sector público no financiero,TRUE,,0.148156881332397,6,744,0,Trimestral,1995-03-31,2025-12-31,0,TRUE
+deuda_publica_bid-ask_spread,Deuda pública,BID-ASK Spread,TRUE,,0.369223833084106,2,6662,0,Diaria,2012-12-26,2026-10-16,0,TRUE
+deuda_publica_tasas_cero_cupon_tes,Deuda pública,Tasas Cero Cupón TES,TRUE,,0.937318325042725,6,33076,0,Diaria,2003-01-02,2026-10-16,0,TRUE
+producto_interno_bruto_pib_trimestral_observado_crecimiento_anual_serie_original,Producto Interno Bruto (PIB),PIB trimestral observado - crecimiento anual (serie original),TRUE,,0.146236419677734,1,82,0,Trimestral,2006-03-31,2026-06-30,0,TRUE
+mercado_laboral_poblacion_tasa_ocupacion_desempleo,Mercado laboral y población,Tasa de ocupación y desempleo,TRUE,,0.136555194854736,2,616,0,Mensual,2001-01-31,2026-08-31,0,TRUE
+mercado_laboral_poblacion_vacantes,Mercado laboral y población,Vacantes,TRUE,,0.339586973190308,7,3951,0,Mensual,1976-01-31,2026-09-30,0,TRUE
+mercado_laboral_poblacion_salarios,Mercado laboral y población,Salarios,TRUE,,0.144604206085205,1,43,0,Anual,1984-12-31,2026-12-31,0,TRUE
+mercado_laboral_poblacion,Mercado laboral y población,Población,TRUE,,0.151699542999268,1,76,0,Anual,1950-12-31,2025-12-31,0,TRUE
+economia_regional_pulso_economico_regional_por_regiones,Economía Regional,Economía Regional – Pulso Económico regional por regiones,TRUE,,0.295215368270874,8,1111,0,Mensual,2012-12-31,2026-09-30,0,TRUE
+economia_regional_pulso_economico_regional_agregados_nacionales,Economía Regional,Economía Regional – Pulso Económico regional agregados nacionales,TRUE,,0.246254444122314,7,1018,0,Mensual,2012-12-31,2026-09-30,0,TRUE
+cuentas_financieras_saldos,Cuentas financieras_Saldos y Flujos,Cuentas financieras / Saldos,TRUE,,0.138662815093994,6,250,0,Trimestral,2015-12-31,2026-06-30,0,TRUE
+cuentas_financieras_flujos,Cuentas financieras_Saldos y Flujos,Cuentas financieras / Flujos,TRUE,,0.162193059921265,8,336,0,Trimestral,2016-03-31,2026-06-30,0,TRUE
+metales_preciosos_regalias_oro_plata_platino,Metales preciosos,"Precio mensual de regalías para Oro, Plata y Platino por gramo fino",TRUE,,0.20744800567627,3,1020,0,Mensual,1998-07-01,2026-10-01,0,TRUE
+unidad_de_analisis_de_poder_adquisitivo_constante_upac,Más datos,Unidad de poder adquisitivo constante (UPAC),TRUE,,0.516239643096924,1,9969,0,Diaria,1972-09-15,1999-12-31,0,TRUE
+subasta_opciones_put_control_volatilidad,Subastas de opciones,PUT para control de volatilidad,TRUE,,0.156332492828369,4,84,0,Diaria,2004-12-17,2009-07-22,0,TRUE
+subasta_opciones_put_acumulacion_reservas,Subastas de opciones,PUT para acumulación de reservas,TRUE,,0.135989665985107,4,280,0,Diaria,1999-11-30,2026-10-01,0,TRUE
+subasta_opciones_call_control_volatilidad,Subastas de opciones,CALL para control de volatilidad,TRUE,,0.14816427230835,4,68,0,Diaria,2002-07-29,2009-02-12,0,TRUE
+subasta_opciones_call_desacumulacion_reservas,Subastas de opciones,CALL para desacumulación de reservas,TRUE,,0.144130229949951,4,16,0,Diaria,2003-02-28,2016-05-20,0,TRUE

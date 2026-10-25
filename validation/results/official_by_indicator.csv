@@ -1,0 +1,13 @@
+file,idNombreSerie,series,periodicidad,n_official,n_common,n_match,only_official,only_api,max_abs_diff,pct_match
+Inflación y meta.csv,inflacion_y_meta,2,Mensual/Anual,1284,1284,1284,0,0,0,100
+IPC_Índice de Precios al Consumidor.csv,indice_de_precios_al_consumidor_ipc,1,Mensual,867,867,867,0,0,0,100
+Producto Interno Bruto (PIB).csv,producto_interno_bruto_pib_trimestral_observado_crecimiento_anual_serie_original,1,Trimestral,82,82,82,0,0,0,100
+Tasas de interés de política monetaria.csv,tasas_interes_politica_monetaria,1,Diaria,10481,10481,10481,0,0,0,100
+Tasas de interés.csv,tasas_interes_cdt_dtf,3,Semanal,5709,5709,5709,0,0,0,100
+Tasa de cambio del peso colombiano.csv,tasa_cambio_peso_colombiano_trm_dolar_usd,1,Diaria,12753,12753,12753,0,0,0,100
+Reservas internacionales.csv,reservas_internacionales,1,Mensual,801,801,801,0,0,0,100
+Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,11,Diaria,3300,3300,3300,0,0,0,100
+Remesas de trabajadores.csv,remesas_trabajadores,1,Trimestral,106,106,106,0,0,0,100
+Gobierno Nacional Central.csv,gobierno_nacional_central,6,Mensual,1620,1620,1620,0,0,0,100
+Sector público no financiero.csv,sector_publico_no_financiero,6,Trimestral,744,744,744,0,0,0,100
+Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,8,Mensual,1111,1111,1111,0,0,0,100

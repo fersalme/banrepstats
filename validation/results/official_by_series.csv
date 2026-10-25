@@ -1,0 +1,43 @@
+id,file,idNombreSerie,periodicidad,n_official,n_api,n_common,only_official,only_api,n_match,max_abs_diff,tolerance,official_last,api_last,pct_match
+Inflación total anual,Inflación y meta.csv,inflacion_y_meta,Mensual,855,855,855,0,0,855,0,0.005,2026-09-30,2026-09-30,100
+Meta de inflación,Inflación y meta.csv,inflacion_y_meta,Anual,429,429,429,0,0,429,0,0.05,2026-09-30,2026-09-30,100
+Índice de Precios al Consumidor (IPC),IPC_Índice de Precios al Consumidor.csv,indice_de_precios_al_consumidor_ipc,Mensual,867,867,867,0,0,867,0,0.005,2026-09-30,2026-09-30,100
+"Crecimiento PIB real, Trimestral, base: 2015",Producto Interno Bruto (PIB).csv,producto_interno_bruto_pib_trimestral_observado_crecimiento_anual_serie_original,Trimestral,82,82,82,0,0,82,0,0.005,2026-06-30,2026-06-30,100
+Tasa de política monetaria,Tasas de interés de política monetaria.csv,tasas_interes_politica_monetaria,Diaria,10481,10481,10481,0,0,10481,0,0.005,2026-10-25,2026-10-25,100
+"Tasa de Certificado de Depósito a Término (CDT) a 180 días, semanal",Tasas de interés.csv,tasas_interes_cdt_dtf,Semanal,1738,1738,1738,0,0,1738,0,0.005,2026-10-30,2026-10-30,100
+"Tasa de Certificado de Depósito a Término (CDT) a 360 días, semanal",Tasas de interés.csv,tasas_interes_cdt_dtf,Semanal,1738,1738,1738,0,0,1738,0,0.005,2026-10-30,2026-10-30,100
+"Tasa de Depósitos a Término Fijo (DTF) a 90 días, semanal",Tasas de interés.csv,tasas_interes_cdt_dtf,Semanal,2233,2233,2233,0,0,2233,0,0.005,2026-10-30,2026-10-30,100
+Tasa Representativa del Mercado (TRM),Tasa de cambio del peso colombiano.csv,tasa_cambio_peso_colombiano_trm_dolar_usd,Diaria,12753,12753,12753,0,0,12753,0,0.005,2026-10-26,2026-10-26,100
+Reservas internacionales netas,Reservas internacionales.csv,reservas_internacionales,Mensual,801,801,801,0,0,801,0,0.005,2026-09-30,2026-09-30,100
+Subasta de Expansión Plazo 1 día - Cupo,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-23,2026-10-23,100
+Subasta de Expansión Plazo 1 día - Monto aprobado,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-23,2026-10-23,100
+Subasta de Expansión Plazo 1 día - Monto demandado,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-23,2026-10-23,100
+Subasta de Expansión Plazo 1 día - Tasa de corte,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.005,2026-10-23,2026-10-23,100
+Subasta de Expansión Plazo 7 días - Cupo,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-23,2026-10-23,100
+Subasta de Expansión Plazo 7 días - Monto aprobado,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-23,2026-10-23,100
+Subasta de Expansión Plazo 7 días - Monto demandado,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-23,2026-10-23,100
+Subasta de Expansión Plazo 7 días - Tasa de corte,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.005,2026-10-23,2026-10-23,100
+Ventanilla de Expansión Plazo 1 día - Monto aprobado,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-22,2026-10-22,100
+Ventanilla de Expansión Plazo 1 día - Monto demandado,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.5,2026-10-22,2026-10-22,100
+Ventanilla de Expansión Plazo 1 día - Tasa de corte,Operaciones en el mercado monetario OMA.csv,operaciones_mercado_monetario_oma_expancion_transitoria,Diaria,300,300,300,0,0,300,0,0.005,2026-10-22,2026-10-22,100
+"Ingresos de Remesas de trabajadores, trimestral",Remesas de trabajadores.csv,remesas_trabajadores,Trimestral,106,106,106,0,0,106,0,0.005,2026-06-30,2026-06-30,100
+Balance fiscal gobierno nacional central - Déficit (-) o superávit (+) fiscal del GNC - Metodología caja,Gobierno Nacional Central.csv,gobierno_nacional_central,Mensual,270,270,270,0,0,270,0,0.005,2026-06-30,2026-06-30,100
+Balance fiscal gobierno nacional central - Financiamiento externo - Metodología caja,Gobierno Nacional Central.csv,gobierno_nacional_central,Mensual,270,270,270,0,0,270,0,0.005,2026-06-30,2026-06-30,100
+Balance fiscal gobierno nacional central - Financiamiento interno - Metodología caja,Gobierno Nacional Central.csv,gobierno_nacional_central,Mensual,270,270,270,0,0,270,0,0.005,2026-06-30,2026-06-30,100
+Balance fiscal gobierno nacional central - Gastos - Metodología caja,Gobierno Nacional Central.csv,gobierno_nacional_central,Mensual,270,270,270,0,0,270,0,0.005,2026-06-30,2026-06-30,100
+Balance fiscal gobierno nacional central - Ingresos  - Metodología caja,Gobierno Nacional Central.csv,gobierno_nacional_central,Mensual,270,270,270,0,0,270,0,0.005,2026-06-30,2026-06-30,100
+Balance fiscal gobierno nacional central - Intereses - Metodología caja,Gobierno Nacional Central.csv,gobierno_nacional_central,Mensual,270,270,270,0,0,270,0,0.005,2026-06-30,2026-06-30,100
+Balance fiscal del sector público no financiero - Déficit (-) o superávit (+) fiscal de las empresas públicas no financieras - Metodología caja,Sector público no financiero.csv,sector_publico_no_financiero,Trimestral,124,124,124,0,0,124,0,0.005,2025-12-31,2025-12-31,100
+Balance fiscal del sector público no financiero - Financiamiento externo - Metodología caja,Sector público no financiero.csv,sector_publico_no_financiero,Trimestral,124,124,124,0,0,124,0,0.005,2025-12-31,2025-12-31,100
+Balance fiscal del sector público no financiero - Financiamiento interno - Metodología caja,Sector público no financiero.csv,sector_publico_no_financiero,Trimestral,124,124,124,0,0,124,0,0.005,2025-12-31,2025-12-31,100
+Balance fiscal del sector público no financiero - Gastos - Metodología caja,Sector público no financiero.csv,sector_publico_no_financiero,Trimestral,124,124,124,0,0,124,0,0.005,2025-12-31,2025-12-31,100
+Balance fiscal del sector público no financiero - Ingresos - Metodología caja,Sector público no financiero.csv,sector_publico_no_financiero,Trimestral,124,124,124,0,0,124,0,0.005,2025-12-31,2025-12-31,100
+Balance fiscal del sector público no financiero - Intereses - Metodología caja,Sector público no financiero.csv,sector_publico_no_financiero,Trimestral,124,124,124,0,0,124,0,0.005,2025-12-31,2025-12-31,100
+Pulso Económico Regional - Antioquia,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,166,166,166,0,0,166,0,0.005,2026-09-30,2026-09-30,100
+Pulso Económico Regional - Bogotá,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,93,93,93,0,0,93,0,0.005,2026-09-30,2026-09-30,100
+Pulso Económico Regional - Caribe,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,130,130,130,0,0,130,0,0.005,2026-09-30,2026-09-30,100
+Pulso Económico Regional - Central Cafetera,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,130,130,130,0,0,130,0,0.005,2026-09-30,2026-09-30,100
+Pulso Económico Regional - Llanos orientales,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,130,130,130,0,0,130,0,0.005,2026-09-30,2026-09-30,100
+Pulso Económico Regional - Nacional,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,166,166,166,0,0,166,0,0.005,2026-09-30,2026-09-30,100
+Pulso Económico Regional - Nororiente,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,130,130,130,0,0,130,0,0.005,2026-09-30,2026-09-30,100
+Pulso Económico Regional - Suroccidente,Economía Regional.csv,economia_regional_pulso_economico_regional_por_regiones,Mensual,166,166,166,0,0,166,0,0.005,2026-09-30,2026-09-30,100

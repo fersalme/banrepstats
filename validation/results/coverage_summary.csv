@@ -1,0 +1,2 @@
+retrieved_at,banrepstats_version,indicators,indicators_ok,series,observations,duplicated_obs,all_whole_day_dates,snapshot_codes_removed,live_codes_added
+2026-10-24 20:51:38 -05,1.1.0,61,61,256,460461,0,TRUE,0,0

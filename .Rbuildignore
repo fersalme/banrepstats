@@ -3,3 +3,6 @@
 ^vignettes/.*_files$
 ^README\.Rmd$
 ^\.github$
+^validation$
+^suameca_data$
+^\.claude$
