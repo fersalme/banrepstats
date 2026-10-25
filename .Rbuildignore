@@ -1,5 +1,5 @@
 ^LICENSE\.md$
 ^data-raw$
-^vignettes/\.quarto$
-^vignettes/*_files$
+^vignettes/.*_files$
 ^README\.Rmd$
+^\.github$

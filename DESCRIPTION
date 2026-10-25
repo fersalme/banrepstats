@@ -1,13 +1,13 @@
 Package: banrepstats
 Title: Download Economic Data from Banco de la República of Colombia
-Version: 0.1
+Version: 1.1.0
 Authors@R:
     person("Fernando", "Salcedo Mejía", , "fernandosalcedom@gmail.com", role = c("aut", "cre"))
 Description: Tools to browse the indicator catalog and download economic
     time series published by Banco de la República (Colombia's central
-    bank) through its public statistics API. Provides functions to fetch
-    the indicator catalog, build request URLs, download series as tidy
-    data.table objects, and plot them with a consistent style.
+    bank) through the statistics API behind its SUAMECA portal. Provides
+    functions to fetch and search the indicator catalog, download series
+    as tidy data.table objects, and plot them with a consistent style.
 License: MIT + file LICENSE
 URL: https://github.com/fersalme/banrepstats
 BugReports: https://github.com/fersalme/banrepstats/issues
@@ -21,7 +21,7 @@ Imports:
     utils
 Suggests:
     knitr,
-    quarto,
+    rmarkdown,
     testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
 Depends:
@@ -29,4 +29,4 @@ Depends:
 LazyData: true
 Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
-VignetteBuilder: quarto
+VignetteBuilder: knitr

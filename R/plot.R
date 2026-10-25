@@ -1,11 +1,17 @@
 #' Plot a Banrep series
 #'
-#' @param x A data.table returned by `fetch_banrep()`/`banrep_data()`.
+#' @param x A data.table (or data.frame) returned by `banrep_data()`, with
+#' columns `id`, `unidad`, `date` and `value`.
 #' @param ... Further arguments passed to methods.
 #'
 #' @return A ggplot object.
 #' @export
 series_plot <- function(x, ...) UseMethod("series_plot")
+
+#' @export
+series_plot.data.frame <- function(x, ...) {
+  series_plot(data.table::as.data.table(x), ...)
+}
 
 #' @export
 series_plot.data.table <- function(x, ...) {
@@ -28,10 +34,14 @@ series_plot.data.table <- function(x, ...) {
     "3 months"
   } else if (span_days <= 365 * 10) {
     "1 year"
-  } else {
+  } else if (span_days <= 365 * 25) {
     "2 years"
+  } else if (span_days <= 365 * 60) {
+    "5 years"
+  } else {
+    "10 years"
   }
-  date_labels <- if (date_breaks %in% c("1 year", "2 years")) "%Y" else "%b %Y"
+  date_labels <- if (grepl("year", date_breaks, fixed = TRUE)) "%Y" else "%b %Y"
 
   colores <- rep_len(
     paleta_banrep(c(
@@ -64,7 +74,7 @@ series_plot.data.table <- function(x, ...) {
       x = NULL,
       y = unidad_label,
       color = "Serie",
-      caption = "Source : Banco de la Rep\u00fablica - Portal de estad\u00edsticas econ\u00f3micas"
+      caption = "Source: Banco de la Rep\u00fablica - Portal de estad\u00edsticas econ\u00f3micas"
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(

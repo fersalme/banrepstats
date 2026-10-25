@@ -13,6 +13,16 @@ test_that("catalogo_banrep() returns the expected structure", {
   expect_type(catalogo$idSerie, "integer")
   expect_true(all(catalogo$idGrupo > 0))
   expect_false(anyNA(catalogo$idSerie))
+  # Only downloadable indicators: no blank codes left by grouping nodes.
+  expect_false(any(trimws(catalogo$idNombreSerie) == ""))
+  expect_false(anyDuplicated(catalogo$idNombreSerie) > 0L)
+})
+
+test_that("every code in the bundled banrep_cache still exists live", {
+  skip_if_offline()
+
+  catalogo <- catalogo_banrep()
+  expect_length(setdiff(banrep_cache$idNombreSerie, catalogo$idNombreSerie), 0L)
 })
 
 test_that("build_url_banrep() builds the URL from a given catalog", {

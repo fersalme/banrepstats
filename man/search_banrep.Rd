@@ -4,7 +4,7 @@
 \alias{search_banrep}
 \title{Search the Banco de la República indicator catalog by keyword}
 \usage{
-search_banrep(x, cache)
+search_banrep(x, cache, fixed = TRUE)
 }
 \arguments{
 \item{x}{A keyword to search for.}
@@ -12,19 +12,27 @@ search_banrep(x, cache)
 \item{cache}{A data.table as returned by \code{catalogo_banrep()}, e.g. the
 bundled \code{banrep_cache} dataset. If omitted, \code{catalogo_banrep()} is called
 to fetch a live catalog.}
+
+\item{fixed}{If \code{TRUE} (the default), \code{x} is matched as literal text.
+Use \code{FALSE} to treat it as a regular expression.}
 }
 \value{
-A data.table subset of the catalog whose \code{NombreGrupo} or
-\code{NombreSerie} match \code{x}.
+A data.table subset of the catalog whose \code{NombreGrupo},
+\code{NombreSerie} or \code{idNombreSerie} match \code{x}.
 }
 \description{
-Looks up \code{x} (case-insensitive, partial match) against the catalog's
-group and indicator names, so you don't have to browse the whole
+Looks up \code{x} against the catalog's group names, indicator names and
+indicator codes, so you don't have to browse the whole
 \code{catalogo_banrep()} table to find an indicator's \code{idNombreSerie} code.
+The match is partial and ignores both case and Spanish accents, so
+\code{"inflacion"} and \code{"Inflación"} return the same rows.
 }
 \examples{
-\dontrun{
-search_banrep("inflación")
+search_banrep("inflacion", cache = banrep_cache)
 search_banrep("tasa", cache = banrep_cache)
+search_banrep("^IP", cache = banrep_cache, fixed = FALSE)
+\dontrun{
+# Live catalog
+search_banrep("desempleo")
 }
 }

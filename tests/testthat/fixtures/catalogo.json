@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1000, "idPadre": 0, "nombre": "Precios e inflación",
+    "clasificacionMenu": "CATALOGO_DATOS", "idCarguePlan": " ",
+    "idMenuJson": "PRECIOS_E_INFLACION", "idSubmenuJson": " ", "urlAcceso": " ",
+    "menuHijos": [
+      {
+        "id": 100001, "idPadre": 1000, "nombre": "Inflación y meta",
+        "clasificacionMenu": "CATALOGO_DATOS", "idCarguePlan": "META_INFLACION",
+        "idMenuJson": "PRECIOS_E_INFLACION", "idSubmenuJson": " ",
+        "urlAcceso": "inflacion_y_meta", "menuHijos": []
+      },
+      {
+        "id": 100010, "idPadre": 1000, "nombre": "Más datos",
+        "clasificacionMenu": "CATALOGO_DATOS", "idCarguePlan": " ",
+        "idMenuJson": "PRECIOS_E_INFLACION", "idSubmenuJson": " ", "urlAcceso": " ",
+        "menuHijos": [
+          {
+            "id": 100008, "idPadre": 100010,
+            "nombre": "IPVNBR_Índice de precios de la vivienda nueva",
+            "clasificacionMenu": "CATALOGO_DATOS", "idCarguePlan": "IPVNBR",
+            "idMenuJson": "PRECIOS_E_INFLACION", "idSubmenuJson": " ",
+            "urlAcceso": "indice_precios_vivienda_nueva_ipvn", "menuHijos": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2000, "idPadre": 0, "nombre": "Tasas de interés y sector financiero",
+    "clasificacionMenu": "CATALOGO_DATOS", "idCarguePlan": " ",
+    "idMenuJson": "TASAS_INTERES_Y_SECTOR_FINAN", "idSubmenuJson": " ", "urlAcceso": "",
+    "menuHijos": [
+      {
+        "id": 59, "idPadre": 2000, "nombre": "Tasas de interés de política monetaria",
+        "clasificacionMenu": "CATALOGO_DATOS", "idCarguePlan": "TPM",
+        "idMenuJson": "TASAS_INTERES_Y_SECTOR_FINAN", "idSubmenuJson": " ",
+        "urlAcceso": "tasas_interes_politica_monetaria", "menuHijos": []
+      }
+    ]
+  }
+]

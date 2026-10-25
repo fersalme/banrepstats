@@ -7,7 +7,8 @@
 series_plot(x, ...)
 }
 \arguments{
-\item{x}{A data.table returned by \code{fetch_banrep()}/\code{banrep_data()}.}
+\item{x}{A data.table (or data.frame) returned by \code{banrep_data()}, with
+columns \code{id}, \code{unidad}, \code{date} and \code{value}.}
 
 \item{...}{Further arguments passed to methods.}
 }
