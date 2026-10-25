@@ -1,0 +1,16 @@
+{
+  "SERIES": [
+    {
+      "id": 853, "nombre": "Meta de inflación", "unidad": "Porcentaje",
+      "descripcionPeriodicidad": "Anual",
+      "data": [[-455137200000, null], [1706677200000, 3]]
+    },
+    {
+      "id": 15270, "nombre": "Inflación total anual", "unidad": "Porcentaje",
+      "descripcionPeriodicidad": "Mensual",
+      "data": [[-455137200000, -0.87], [1706677200000, 8.35],
+               [1709182800000, 7.74], [1711861200000, 7.36]]
+    }
+  ],
+  "MENU": []
+}

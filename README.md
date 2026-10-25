@@ -42,24 +42,24 @@ head(catalogo)
 #> 2:    1000 Precios e inflación  100002
 #> 3:    1000 Precios e inflación  100003
 #> 4:    1000 Precios e inflación  100004
-#> 5:    1000 Precios e inflación  100005
-#> 6:    1000 Precios e inflación  100006
-#>                                    NombreSerie
-#>                                         <char>
-#> 1:                            Inflación y meta
-#> 2:         IPC_Índice de Precios al Consumidor
-#> 3:         IPP_Índice de Precios del Productor
-#> 4: IPVU_Índice de precios de la vivienda usada
-#> 5:                    UVR_Unidad de valor real
-#> 6:                            Inflación básica
+#> 5:    1000 Precios e inflación  100008
+#> 6:    1000 Precios e inflación  100005
+#>                                      NombreSerie
+#>                                           <char>
+#> 1:                              Inflación y meta
+#> 2:           IPC_Índice de Precios al Consumidor
+#> 3:           IPP_Índice de Precios del Productor
+#> 4:   IPVU_Índice de precios de la vivienda usada
+#> 5: IPVNBR_Índice de precios de la vivienda nueva
+#> 6:                      UVR_Unidad de valor real
 #>                          idNombreSerie
 #>                                 <char>
 #> 1:                    inflacion_y_meta
 #> 2: indice_de_precios_al_consumidor_ipc
 #> 3:  indice_de_precios_al_productor_ipp
 #> 4:  indice_precios_vivienda_usada_ipvu
-#> 5:               unidad_valor_real_uvr
-#> 6:                    inflacion_basica
+#> 5:  indice_precios_vivienda_nueva_ipvn
+#> 6:               unidad_valor_real_uvr
 ```
 
 Each row is one indicator:
@@ -72,28 +72,29 @@ Each row is one indicator:
   pass to `banrep_data()`.
 
 Not sure which code you need? `search_banrep()` looks up a keyword
-(case-insensitive, partial match) against the topic and indicator names:
+against the topic names, indicator names and codes. The match is partial
+and ignores case and accents, so `"inflacion"` also finds “Inflación”:
 
 ``` r
-search_banrep("inflación")[, .(NombreGrupo, NombreSerie, idNombreSerie)]
+search_banrep("inflacion")[, .(NombreGrupo, NombreSerie, idNombreSerie)]
 #>            NombreGrupo                                   NombreSerie
 #>                 <char>                                        <char>
 #> 1: Precios e inflación                              Inflación y meta
 #> 2: Precios e inflación           IPC_Índice de Precios al Consumidor
 #> 3: Precios e inflación           IPP_Índice de Precios del Productor
 #> 4: Precios e inflación   IPVU_Índice de precios de la vivienda usada
-#> 5: Precios e inflación                      UVR_Unidad de valor real
-#> 6: Precios e inflación                              Inflación básica
-#> 7: Precios e inflación IPVNBR_Índice de precios de la vivienda nueva
+#> 5: Precios e inflación IPVNBR_Índice de precios de la vivienda nueva
+#> 6: Precios e inflación                      UVR_Unidad de valor real
+#> 7: Precios e inflación                              Inflación básica
 #>                          idNombreSerie
 #>                                 <char>
 #> 1:                    inflacion_y_meta
 #> 2: indice_de_precios_al_consumidor_ipc
 #> 3:  indice_de_precios_al_productor_ipp
 #> 4:  indice_precios_vivienda_usada_ipvu
-#> 5:               unidad_valor_real_uvr
-#> 6:                    inflacion_basica
-#> 7:  indice_precios_vivienda_nueva_ipvn
+#> 5:  indice_precios_vivienda_nueva_ipvn
+#> 6:               unidad_valor_real_uvr
+#> 7:                    inflacion_basica
 ```
 
 ## Downloading data
@@ -142,6 +143,15 @@ identical(precios$value, precios_cache$value)
 #> [1] TRUE
 ```
 
+The API always returns an indicator’s full history. Use `start` and
+`end` to keep only the dates you need:
+
+``` r
+recientes <- banrep_data("inflacion_y_meta", start = "2020-01-01")
+range(recientes$date)
+#> [1] "2020-01-31" "2026-09-30"
+```
+
 ## Plotting a series
 
 ``` r
@@ -160,13 +170,31 @@ colored with the package’s Banco de la República-inspired palette.
 - `catalogo_banrep()` — download and flatten the live indicator catalog.
 - `search_banrep()` — search the catalog by keyword.
 - `banrep_data()` — download one or more indicators as a single
-  `data.table`.
+  `data.table`, optionally restricted to a date range.
 - `series_plot()` — plot a `data.table` returned by `banrep_data()`.
 - `banrep_cache` — a bundled snapshot of the catalog, for offline
   lookups.
 
 See `vignette("banrepstats")` for a longer walkthrough, including an
 example of integrating with the `tsibble`/`fable` forecasting ecosystem.
+
+## Reliability
+
+`banrepstats` relies on the internal, undocumented API behind SUAMECA,
+so it is checked continuously:
+
+- The test suite runs offline against fixtures that mirror the API
+  responses, plus live tests against the real service.
+- A weekly GitHub Actions job downloads every indicator in the catalog
+  (`validation/validate_coverage.R`) and fails if any of them can no
+  longer be retrieved.
+- Requests are retried on temporary errors, and if the API changes the
+  shape of its responses the package says so explicitly.
+- `validation/validate_official.R` compares the downloaded data with CSV
+  files exported by hand from the SUAMECA portal.
+
+If something breaks, please open an
+[issue](https://github.com/fersalme/banrepstats/issues).
 
 ## License
 

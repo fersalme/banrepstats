@@ -15,7 +15,7 @@ test_that("banrep_data() downloads one or more indicators", {
 test_that("banrep_data() reports invalid indicator codes", {
   skip_if_offline()
 
-  expect_error(banrep_data("NO_EXISTE"), "Indicadores permitidos")
+  expect_error(banrep_data("NO_EXISTE"), "Invalid indicator code")
 })
 
 test_that("banrep_data() accepts a pre-fetched catalog via `cache`", {

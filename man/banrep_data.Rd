@@ -4,7 +4,7 @@
 \alias{banrep_data}
 \title{Download Data from the Banrep API}
 \usage{
-banrep_data(indicator, cache)
+banrep_data(indicator, cache, start = NULL, end = NULL)
 }
 \arguments{
 \item{indicator}{Character vector of indicator codes. These codes correspond
@@ -14,6 +14,11 @@ to the \code{idNombreSerie} column of \code{catalogo_banrep()} (or the bundled
 \item{cache}{A data.table as returned by \code{catalogo_banrep()}, e.g. the
 bundled \code{banrep_cache} dataset. If omitted, \code{catalogo_banrep()} is called
 to fetch a live catalog.}
+
+\item{start, end}{Optional dates (a \code{Date} or a \code{"YYYY-MM-DD"} string)
+delimiting the observations to keep, both inclusive. The API always
+returns each indicator's full history, so this filter is applied after
+the download.}
 }
 \value{
 A data.table
@@ -23,17 +28,19 @@ This function downloads the requested information using the Banrep API
 }
 \examples{
 \dontrun{
-# One category, live catalog
-precios <- banrep_data(indicator = "PRECIOS_E_INFLACION")
+# One indicator, live catalog
+precios <- banrep_data(indicator = "inflacion_y_meta")
 head(precios)
-# More than one category
+# More than one indicator
 precios <- banrep_data(
-  indicator = c("PRECIOS_E_INFLACION", "TASAS_INTERES_Y_SECTOR_FINAN")
+  indicator = c("inflacion_y_meta", "tasas_interes_politica_monetaria")
 )
 head(precios)
 # Using the bundled catalog instead of a live one
-precios <- banrep_data(indicator = "PRECIOS_E_INFLACION", cache = banrep_cache)
+precios <- banrep_data(indicator = "inflacion_y_meta", cache = banrep_cache)
 head(precios)
+# Only the observations from 2020 onwards
+recientes <- banrep_data("inflacion_y_meta", start = "2020-01-01")
 }
 
 }

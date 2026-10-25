@@ -14,7 +14,8 @@ A data.table with columns \code{idGrupo}, \code{NombreGrupo}, \code{idSerie},
 \description{
 Fetches the live indicator menu tree from the Banco de la República
 statistics API and flattens it into a single table, one row per
-indicator.
+indicator. Grouping nodes of the menu (entries with no data of their
+own) are dropped.
 }
 \details{
 Banrep's server does not send the intermediate certificate needed to

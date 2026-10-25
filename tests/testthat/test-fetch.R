@@ -19,16 +19,3 @@ test_that("fetch_banrep() parses dates and values correctly", {
   expect_gt(nrow(dt), 0)
   expect_equal(min(dt$date), as.Date("1955-07-31"))
 })
-
-test_that("fetch_banrep() handles menu nodes with no series", {
-  skip_if_offline()
-
-  # idMenu 100010 is "Más datos", a pure grouping node with no series
-  # of its own (SERIES comes back as an empty JSON array).
-  expect_message(
-    dt <- fetch_banrep(.url_menu(100010)),
-    "no observations"
-  )
-  expect_s3_class(dt, "data.table")
-  expect_equal(nrow(dt), 0)
-})

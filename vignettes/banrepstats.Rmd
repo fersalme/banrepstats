@@ -1,14 +1,19 @@
 ---
 title: "banrepstats"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{banrepstats}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-knitr:
-  opts_chunk:
-    collapse: true
-    comment: '#>'
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 
 `banrepstats` downloads economic time series from Banco de la República's
 (Colombia's central bank) public statistics API — the same data behind its
@@ -31,8 +36,7 @@ This vignette walks through the functions the package exports:
 remotes::install_github("fersalme/banrepstats")
 ```
 
-```{r}
-#| label: setup
+```{r setup}
 library(banrepstats)
 ```
 
@@ -42,8 +46,7 @@ Banco de la República organizes its indicators in a menu tree (topic ->
 sub-topic -> indicator). `catalogo_banrep()` downloads that tree from the
 live API and flattens it into a single table, one row per indicator:
 
-```{r}
-#| label: catalogo
+```{r catalogo}
 catalogo <- catalogo_banrep()
 nrow(catalogo)
 head(catalogo)
@@ -61,29 +64,28 @@ Each row is one indicator:
 For example, "Inflación y meta" (under the "Precios e inflación" topic)
 has the code `"inflacion_y_meta"`:
 
-```{r}
-#| label: catalogo-filtro
+```{r catalogo-filtro}
 subset(catalogo, idNombreSerie == "inflacion_y_meta")
 ```
 
 Not sure which code you need? `search_banrep()` looks up a keyword
-(case-insensitive, partial match) against the topic and indicator names:
+against the topic names, indicator names and codes. The match is partial
+and ignores case and accents, so `"inflacion"` also finds "Inflación":
 
-```{r}
-#| label: search-banrep
-search_banrep("inflación")[, .(NombreGrupo, NombreSerie, idNombreSerie)]
+```{r search-banrep}
+search_banrep("inflacion")[, .(NombreGrupo, NombreSerie, idNombreSerie)]
 ```
 
-`search_banrep()` also accepts a `cache` argument, with the same meaning
-as in `banrep_data()` (see below).
+The keyword is matched as literal text; pass `fixed = FALSE` to use a
+regular expression instead. `search_banrep()` also accepts a `cache`
+argument, with the same meaning as in `banrep_data()` (see below).
 
 ## Downloading data
 
 Pass one of those codes to `banrep_data()` to download the underlying
 series as a single `data.table`:
 
-```{r}
-#| label: banrep-data-uno
+```{r banrep-data-uno}
 precios <- banrep_data(indicator = "inflacion_y_meta")
 head(precios)
 ```
@@ -98,8 +100,7 @@ Each row is one observation of one series:
 A single indicator can still bundle more than one related series —
 notice how `"inflacion_y_meta"` alone already returns two:
 
-```{r}
-#| label: banrep-data-series
+```{r banrep-data-series}
 unique(precios$id)
 ```
 
@@ -108,22 +109,28 @@ unique(precios$id)
 `indicator` accepts a vector of codes; the results come back stacked in a
 single `data.table`:
 
-```{r}
-#| label: banrep-data-varios
+```{r banrep-data-varios}
 datos <- banrep_data(c("inflacion_y_meta", "tasas_interes_politica_monetaria"))
 unique(datos$id)
 ```
 
+### Restricting the date range
+
+The API always returns each indicator's full history. `start` and `end`
+(both inclusive) keep only the observations you need:
+
+```{r banrep-data-fechas}
+recientes <- banrep_data("inflacion_y_meta", start = "2020-01-01")
+range(recientes$date)
+```
+
 ### Invalid indicator codes
 
-Passing a code that isn't in the catalog raises an error listing the
-valid options:
+Passing a code that isn't in the catalog raises an error naming the
+invalid codes:
 
-```{r}
-#| label: banrep-data-error
-#| error: true
-#| eval: false
-banrep_data("NO_EXISTE")
+```{r banrep-data-error, error = TRUE}
+banrep_data("NO_EXISTE", cache = banrep_cache)
 ```
 
 ### Using the bundled catalog snapshot
@@ -133,8 +140,7 @@ indicator code and look up its id, which means every call hits the
 catalog endpoint. If you're downloading many indicators, or don't need
 the live catalog, fetch it once and pass it in via `cache`:
 
-```{r}
-#| label: banrep-data-cache
+```{r banrep-data-cache}
 precios_cache <- banrep_data("inflacion_y_meta", cache = catalogo)
 identical(precios$value, precios_cache$value)
 ```
@@ -143,8 +149,7 @@ The package also bundles a snapshot of the catalog as `banrep_cache`, so
 you can look indicators up offline without calling `catalogo_banrep()` at
 all:
 
-```{r}
-#| label: banrep-cache
+```{r banrep-cache}
 head(banrep_cache)
 ```
 
@@ -154,10 +159,7 @@ head(banrep_cache)
 draws one line per distinct series (the `id` column), colored with the
 package's Banco de la República-inspired palette:
 
-```{r}
-#| label: plot-precios
-#| fig-width: 7
-#| fig-height: 4
+```{r plot-precios, fig.width = 7, fig.height = 4}
 series_plot(precios)
 ```
 
@@ -165,10 +167,7 @@ Series with different units are still placed on the same panel, so
 `series_plot()` is best used with indicators that share a unit of
 measurement:
 
-```{r}
-#| label: plot-tasas
-#| fig-width: 7
-#| fig-height: 4
+```{r plot-tasas, fig.width = 7, fig.height = 4}
 tasas <- banrep_data("tasas_interes_politica_monetaria")
 series_plot(tasas)
 ```
@@ -186,8 +185,7 @@ not run when the vignette is built — install `tsibble`, `fable`,
 `fable.prophet` and `feasts` yourself to try it. The plot below is a
 pre-rendered snapshot of the code's output.
 
-```{r}
-#| eval: false
+```{r, eval = FALSE}
 library(dplyr)
 library(tsibble)
 library(fable)
@@ -223,6 +221,4 @@ fc <- fit |> forecast(h = "18 months")
 fc |> autoplot(desempleo)
 ```
 
-![18-month forecast of Colombia's national unemployment rate (ARIMA, ETS and prophet)][fig-forecast]
-
-[fig-forecast]: banrepstats-forecast.png
+![18-month forecast of Colombia's national unemployment rate (ARIMA, ETS and prophet)](banrepstats-forecast.png){width=100%}

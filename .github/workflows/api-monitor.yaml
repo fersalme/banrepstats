@@ -1,0 +1,45 @@
+# Weekly check against the live SUAMECA API. The API is internal and
+# undocumented, so this is the early warning for changes on Banrep's
+# side: it runs the test suite (including the live tests) and downloads
+# every indicator in the catalog with validation/validate_coverage.R,
+# which fails if any indicator can no longer be retrieved.
+on:
+  schedule:
+    - cron: '0 11 * * 1' # Mondays, 06:00 Bogota time
+  workflow_dispatch:
+
+name: api-monitor
+
+permissions: read-all
+
+jobs:
+  api-monitor:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::devtools, local::.
+          needs: check
+
+      - name: Live tests
+        run: devtools::test(stop_on_failure = TRUE)
+        shell: Rscript {0}
+
+      - name: Download every indicator
+        run: Rscript validation/validate_coverage.R
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: validation/results/coverage*.csv
