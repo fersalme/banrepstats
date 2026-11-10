@@ -1,4 +1,4 @@
-#' Catálogo interno de indicadores disponibles
+#' Bundled snapshot of the indicator catalog
 #'
 #' A snapshot of `catalogo_banrep()`, bundled with the package as an offline
 #' fallback so `banrep_data()` does not need to hit the network just to

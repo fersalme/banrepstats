@@ -38,9 +38,9 @@ paleta_banrep <- function(name) {
 #' search_banrep("inflacion", cache = banrep_cache)
 #' search_banrep("tasa", cache = banrep_cache)
 #' search_banrep("^IP", cache = banrep_cache, fixed = FALSE)
-#' \dontrun{
-#' # Live catalog
-#' search_banrep("desempleo")
+#' if (interactive()) {
+#'   # Live catalog
+#'   search_banrep("desempleo")
 #' }
 search_banrep <- function(x, cache, fixed = TRUE) {
   if (!is.character(x) || length(x) != 1L || is.na(x)) {

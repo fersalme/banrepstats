@@ -6,6 +6,20 @@
 #'
 #' @return A ggplot object.
 #' @export
+#'
+#' @examples
+#' # Synthetic data with the same structure as banrep_data()'s output
+#' fechas <- seq(as.Date("2015-01-01"), as.Date("2024-12-01"), by = "month")
+#' datos <- data.frame(
+#'   id = rep(c("Serie A", "Serie B"), each = length(fechas)),
+#'   unidad = "Porcentaje",
+#'   date = rep(fechas, 2),
+#'   value = c(cumsum(rnorm(length(fechas))), cumsum(rnorm(length(fechas))))
+#' )
+#' series_plot(datos)
+#'
+#' @examplesIf interactive()
+#' series_plot(banrep_data("inflacion_y_meta", cache = banrep_cache))
 series_plot <- function(x, ...) UseMethod("series_plot")
 
 #' @export

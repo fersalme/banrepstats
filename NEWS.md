@@ -43,6 +43,11 @@
 
 ## Documentation
 
+* Prepared for CRAN: the vignette is precomputed (it no longer queries
+  the API when built), examples that need the network only run in
+  interactive sessions, `series_plot()` gained examples, and the return
+  value of `banrep_data()` is documented column by column.
+
 * The vignette is now built with knitr and R Markdown instead of Quarto,
   so building it no longer requires a Quarto installation.
 * README and vignette document the new arguments and how the package

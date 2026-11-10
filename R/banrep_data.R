@@ -13,11 +13,17 @@
 #' returns each indicator's full history, so this filter is applied after
 #' the download.
 #'
-#' @return A data.table
+#' @return A data.table with one row per observation and columns:
+#' * `id`: name of the series (an indicator may bundle several series).
+#' * `unidad`: unit of measurement.
+#' * `periodicidad`: reporting frequency.
+#' * `date`: observation date (`Date`).
+#' * `value`: observation value (`numeric`, `NA` when missing).
+#'
+#' If the API returns no observations, an empty data.table.
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' # One indicator, live catalog
 #' precios <- banrep_data(indicator = "inflacion_y_meta")
 #' head(precios)
@@ -31,7 +37,6 @@
 #' head(precios)
 #' # Only the observations from 2020 onwards
 #' recientes <- banrep_data("inflacion_y_meta", start = "2020-01-01")
-#' }
 #'
 banrep_data <- function(indicator, cache, start = NULL, end = NULL) {
   if (!is.character(indicator) || length(indicator) == 0L) {

@@ -1,13 +1,14 @@
 Package: banrepstats
-Title: Download Economic Data from Banco de la República of Colombia
+Title: Access Economic Statistics from Colombia's Central Bank
 Version: 1.1.0
 Authors@R:
     person("Fernando", "Salcedo Mejía", , "fernandosalcedom@gmail.com", role = c("aut", "cre"))
 Description: Tools to browse the indicator catalog and download economic
-    time series published by Banco de la República (Colombia's central
-    bank) through the statistics API behind its SUAMECA portal. Provides
+    time series published by Banco de la Republica (Colombia's central
+    bank) through the statistics API behind its 'SUAMECA' portal
+    <https://suameca.banrep.gov.co/estadisticas-economicas/>. Provides
     functions to fetch and search the indicator catalog, download series
-    as tidy data.table objects, and plot them with a consistent style.
+    as tidy 'data.table' objects, and plot them with a consistent style.
 License: MIT + file LICENSE
 URL: https://github.com/fersalme/banrepstats
 BugReports: https://github.com/fersalme/banrepstats/issues

@@ -21,13 +21,22 @@ returns each indicator's full history, so this filter is applied after
 the download.}
 }
 \value{
-A data.table
+A data.table with one row per observation and columns:
+\itemize{
+\item \code{id}: name of the series (an indicator may bundle several series).
+\item \code{unidad}: unit of measurement.
+\item \code{periodicidad}: reporting frequency.
+\item \code{date}: observation date (\code{Date}).
+\item \code{value}: observation value (\code{numeric}, \code{NA} when missing).
+}
+
+If the API returns no observations, an empty data.table.
 }
 \description{
 This function downloads the requested information using the Banrep API
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # One indicator, live catalog
 precios <- banrep_data(indicator = "inflacion_y_meta")
 head(precios)
@@ -41,6 +50,5 @@ precios <- banrep_data(indicator = "inflacion_y_meta", cache = banrep_cache)
 head(precios)
 # Only the observations from 2020 onwards
 recientes <- banrep_data("inflacion_y_meta", start = "2020-01-01")
-}
-
+\dontshow{\}) # examplesIf}
 }

@@ -31,8 +31,8 @@ The match is partial and ignores both case and Spanish accents, so
 search_banrep("inflacion", cache = banrep_cache)
 search_banrep("tasa", cache = banrep_cache)
 search_banrep("^IP", cache = banrep_cache, fixed = FALSE)
-\dontrun{
-# Live catalog
-search_banrep("desempleo")
+if (interactive()) {
+  # Live catalog
+  search_banrep("desempleo")
 }
 }

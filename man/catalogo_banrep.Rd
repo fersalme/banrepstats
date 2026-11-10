@@ -25,8 +25,8 @@ failure the request is retried with the missing intermediate supplied
 by the package, so certificate verification stays enabled throughout.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 catalogo <- catalogo_banrep()
 head(catalogo)
-}
+\dontshow{\}) # examplesIf}
 }
