@@ -148,11 +148,9 @@
 #' [banrep_data()]).
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' catalogo <- catalogo_banrep()
 #' head(catalogo)
-#' }
 catalogo_banrep <- function() {
   response <- .request_banrep(.endpoint_catalogo()) |>
     httr2::req_url_query(opcion = "CATALOGO_DATOS") |>

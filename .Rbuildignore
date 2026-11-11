@@ -6,3 +6,11 @@
 ^validation$
 ^suameca_data$
 ^\.claude$
+^cran-comments\.md$
+^vignettes/.*\.orig$
+^vignettes/precompile\.R$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
+^vignettes/.*\.orig$
+^vignettes/precompile\.R$
+^CRAN-SUBMISSION$

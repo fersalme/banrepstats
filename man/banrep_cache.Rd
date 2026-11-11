@@ -3,7 +3,7 @@
 \docType{data}
 \name{banrep_cache}
 \alias{banrep_cache}
-\title{Catálogo interno de indicadores disponibles}
+\title{Bundled snapshot of the indicator catalog}
 \format{
 A data.table with five columns
 \enumerate{
@@ -23,7 +23,8 @@ banrep_cache
 \description{
 A snapshot of \code{catalogo_banrep()}, bundled with the package as an offline
 fallback so \code{banrep_data()} does not need to hit the network just to
-validate/look up an indicator code.
+validate/look up an indicator code. Regenerate it with
+\code{data-raw/banrep_cache.R}.
 }
 \examples{
 banrep_cache
